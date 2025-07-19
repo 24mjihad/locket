@@ -21,7 +21,7 @@ Locket is a premium Obsidian plugin that allows you to password-protect your fil
 *Beautiful glass morphism effect that blurs content while maintaining visual appeal*
 
 ### Password Unlock Modal
-![Unlock Modal](images\locket-unlock-modal.png)
+![Unlock Modal](.images/locket-unlock-modal.png)
 *Clean, modern unlock interface with smooth animations*
 
 ### Unlocked Content
