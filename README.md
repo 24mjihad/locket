@@ -1,5 +1,11 @@
 # 🔒 Locket - Obsidian Plugin
 
+<p align="center">
+  <a href="https://buymeacoffee.com/mojihad" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+  </a>
+</p>
+
 > **Secure your notes with beautiful glass morphism lock effects**
 
 Locket is a premium Obsidian plugin that allows you to password-protect your files and folders with stunning visual effects. Lock sensitive notes with a beautiful glass morphism overlay that blurs content while maintaining visual appeal.
