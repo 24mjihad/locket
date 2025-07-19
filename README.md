@@ -1,94 +1,127 @@
-# Obsidian Sample Plugin
+# 🔒 Locket - Obsidian Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+> **Secure your notes with beautiful glass morphism lock effects**
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+Locket is a premium Obsidian plugin that allows you to password-protect your files and folders with stunning visual effects. Lock sensitive notes with a beautiful glass morphism overlay that blurs content while maintaining visual appeal.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+## ✨ Features
 
-## First time developing plugins?
+- 🔐 **Password Protection**: Lock individual files or entire folders
+- 🎨 **Glass Morphism Effect**: Beautiful transparent overlay with backdrop blur
+- 🌙 **Theme Adaptive**: Automatically adapts to dark/light themes
+- ⚡ **Session Management**: Unlock once per session or manually re-lock
+- 🎯 **Context Menu Integration**: Right-click to lock/unlock items
+- ⌨️ **Command Palette**: Quick access via Ctrl+P commands
+- 📱 **Responsive Design**: Works beautifully on all screen sizes
 
-Quick starting guide for new plugin devs:
+## 🖼️ Screenshots
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### Glass Morphism Lock Overlay
+![Locket Glass Effect](./images/locket-glass-overlay.png)
+*Beautiful glass morphism effect that blurs content while maintaining visual appeal*
 
-## Releasing new releases
+### Password Unlock Modal
+![Unlock Modal](./images/locket-unlock-modal.png)
+*Clean, modern unlock interface with smooth animations*
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+### Unlocked Content
+![Unlocked Content](./images/locket-unlocked-content.png)
+*Content revealed with session management and beautiful success notifications*
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## 🚀 Installation
 
-## Adding your plugin to the community plugin list
+### From Obsidian Community Plugins
+1. Open **Settings** in Obsidian
+2. Navigate to **Community Plugins**
+3. Click **Browse** and search for "Locket"
+4. Click **Install** and then **Enable**
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### Manual Installation
+1. Download the latest release from [GitHub Releases](https://github.com/24mjihad/locket/releases)
+2. Extract the files to your vault's `.obsidian/plugins/locket/` folder
+3. Reload Obsidian and enable the plugin in settings
 
-## How to use
+## 📖 Usage
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### Locking Files/Folders
+1. **Right-click** on any file or folder in the file explorer
+2. Select **"Lock with Locket"** from the context menu
+3. Enter a password in the beautiful modal dialog
+4. Your content is now secured with a glass morphism overlay
 
-## Manually installing the plugin
+### Unlocking Content
+1. **Click** on the glass overlay covering locked content
+2. Enter your password in the unlock modal
+3. Content unlocks for the current session
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+### Commands
+- `Ctrl+P` → **"Lock current file"** - Lock the active file
+- `Ctrl+P` → **"Unlock current file"** - Unlock the active file
+- `Ctrl+P` → **"Locket Manager"** - Manage all locked items
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+## ⚙️ Configuration
 
-## Funding URL
+Access plugin settings via **Settings** → **Community Plugins** → **Locket**
 
-You can include funding URLs where people who use your plugin can financially support it.
+- 📁 **View Locked Items**: See all your locked files and folders
+- 🔧 **Manage Locks**: Remove locks or unlock items
+- 📚 **Usage Instructions**: Built-in help and tips
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+## 🎨 Visual Design
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+Locket features a modern, premium design with:
+
+- **Glass Morphism Effects**: Stunning transparent overlays with backdrop blur
+- **Smooth Animations**: 60fps animations with cubic-bezier easing
+- **Theme Integration**: Seamlessly adapts to your Obsidian theme
+- **Modern Typography**: Clean, readable fonts with proper spacing
+- **Micro-interactions**: Delightful hover effects and transitions
+
+## 🔒 Security
+
+- **Password Hashing**: Passwords are hashed using secure algorithms
+- **Session Management**: Unlocked content stays accessible during your session
+- **No Data Collection**: All data stays local in your vault
+- **Privacy First**: No external connections or data transmission
+
+## 🛠️ Development
+
+This project uses TypeScript and modern web technologies:
+
+```bash
+# Install dependencies
+npm install
+
+# Development mode
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-If you have multiple URLs, you can also do:
+## 📝 Contributing
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+Contributions are welcome! Please feel free to submit issues or pull requests.
 
-## API Documentation
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
 
-See https://github.com/obsidianmd/obsidian-api
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 💖 Support
+
+If you find Locket useful, consider supporting the development:
+
+- ⭐ Star this repository
+- 🐛 Report bugs and request features
+- 💬 Share with other Obsidian users
+- ☕ [Buy me a coffee](https://buymeacoffee.com/mojihad)
+
+---
+
+**Made with ❤️ for the Obsidian community**
