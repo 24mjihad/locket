@@ -25,7 +25,7 @@ export default class LocketPlugin extends Plugin {
 		await this.loadSettings();
 
 		// Add ribbon icon
-		this.addRibbonIcon('lock', 'Locket - Lock/Unlock Files', (evt: MouseEvent) => {
+		this.addRibbonIcon('lock', 'Lock/Unlock Files', (evt: MouseEvent) => {
 			new LocketManagerModal(this.app, this).open();
 		});
 
@@ -47,8 +47,8 @@ export default class LocketPlugin extends Plugin {
 		});
 
 		this.addCommand({
-			id: 'open-locket-manager',
-			name: 'Open Locket Manager',
+			id: 'open-manager',
+			name: 'Open manager',
 			callback: () => {
 				new LocketManagerModal(this.app, this).open();
 			}
@@ -209,8 +209,7 @@ export default class LocketPlugin extends Plugin {
 	}
 
 	private applyBlur(element: HTMLElement, path: string) {
-		element.style.filter = `blur(${this.settings.blurIntensity}px)`;
-		element.style.pointerEvents = 'none';
+		element.addClass('locket-blurred');
 		
 		if (!this.blurredElements.has(path)) {
 			this.blurredElements.set(path, []);
@@ -220,42 +219,12 @@ export default class LocketPlugin extends Plugin {
 
 	private showUnlockOverlay(contentEl: HTMLElement, path: string) {
 		const overlay = contentEl.createDiv('locket-overlay');
-		overlay.style.cssText = `
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background: rgba(0, 0, 0, 0.8);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			z-index: 1000;
-			color: white;
-			font-size: 18px;
-			cursor: pointer;
-		`;
 		
 		const unlockButton = overlay.createDiv('locket-unlock-button');
-		unlockButton.innerHTML = '🔒 Click to unlock this content';
-		unlockButton.style.cssText = `
-			padding: 20px;
-			border: 2px solid white;
-			border-radius: 10px;
-			background: rgba(255, 255, 255, 0.1);
-			transition: all 0.3s ease;
-		`;
+		unlockButton.setText('🔒 Click to unlock this content');
 		
 		unlockButton.addEventListener('click', () => {
 			this.promptUnlock(path);
-		});
-
-		unlockButton.addEventListener('mouseenter', () => {
-			unlockButton.style.background = 'rgba(255, 255, 255, 0.2)';
-		});
-
-		unlockButton.addEventListener('mouseleave', () => {
-			unlockButton.style.background = 'rgba(255, 255, 255, 0.1)';
 		});
 
 		if (!this.blurredElements.has(path)) {
@@ -271,8 +240,7 @@ export default class LocketPlugin extends Plugin {
 				if (el.classList.contains('locket-overlay')) {
 					el.remove();
 				} else {
-					el.style.filter = '';
-					el.style.pointerEvents = '';
+					el.removeClass('locket-blurred');
 				}
 			});
 			this.blurredElements.delete(path);
@@ -633,8 +601,7 @@ class LocketManagerModal extends Modal {
 			return;
 		}
 
-		const list = contentEl.createEl('div');
-		list.style.cssText = 'max-height: 400px; overflow-y: auto; margin: 20px 0;';
+		const list = contentEl.createEl('div', { cls: 'locket-locked-items-list' });
 
 		lockedItems.forEach(path => {
 			const item = this.plugin.settings.lockedItems[path];
@@ -643,7 +610,15 @@ class LocketManagerModal extends Modal {
 			const infoEl = itemEl.createDiv('locket-item-info');
 			const typeIcon = item.type === 'file' ? '📄' : '📁';
 			const fileName = path.split('/').pop() || path;
-			infoEl.innerHTML = `${typeIcon} <strong>${fileName}</strong><br><small style="color: var(--text-muted);">${path}</small>`;
+			
+			const titleEl = infoEl.createEl('div', { cls: 'locket-item-title' });
+			titleEl.createSpan({ text: typeIcon + ' ' });
+			titleEl.createEl('strong', { text: fileName });
+			
+			const pathEl = infoEl.createEl('small', { 
+				text: path, 
+				cls: 'locket-item-path'
+			});
 
 			const actionsEl = itemEl.createDiv('locket-item-actions');
 
@@ -715,22 +690,25 @@ class LocketSettingTab extends PluginSettingTab {
 		if (lockedItems.length > 0) {
 			containerEl.createEl('h3', { text: 'Locked Items' });
 			
-			const listEl = containerEl.createEl('div');
-			listEl.style.cssText = 'max-height: 300px; overflow-y: auto; border: 1px solid #ccc; border-radius: 5px; padding: 10px;';
+			const listEl = containerEl.createEl('div', { cls: 'locket-settings-list' });
 
 			lockedItems.forEach(path => {
 				const item = this.plugin.settings.lockedItems[path];
-				const itemEl = listEl.createDiv();
-				itemEl.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee;';
+				const itemEl = listEl.createDiv('locket-settings-item');
 
 				const typeIcon = item.type === 'file' ? '📄' : '📁';
 				const fileName = path.split('/').pop() || path;
 				
-				const infoEl = itemEl.createDiv();
-				infoEl.innerHTML = `${typeIcon} <strong>${fileName}</strong><br><small style="color: #666;">${path}</small>`;
+				const infoEl = itemEl.createDiv('locket-settings-info');
+				const titleEl = infoEl.createEl('div');
+				titleEl.createSpan({ text: typeIcon + ' ' });
+				titleEl.createEl('strong', { text: fileName });
+				infoEl.createEl('small', { text: path, cls: 'locket-settings-path' });
 
-				const removeBtn = itemEl.createEl('button', { text: 'Remove' });
-				removeBtn.style.cssText = 'padding: 4px 8px; background: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;';
+				const removeBtn = itemEl.createEl('button', { 
+					text: 'Remove',
+					cls: 'locket-settings-remove-btn'
+				});
 				removeBtn.addEventListener('click', async () => {
 					await this.plugin.removeLock(path);
 					this.display(); // Refresh the settings
@@ -740,27 +718,33 @@ class LocketSettingTab extends PluginSettingTab {
 
 		// Instructions
 		containerEl.createEl('h3', { text: 'How to Use' });
-		const instructions = containerEl.createEl('div');
-		instructions.innerHTML = `
-			<p><strong>To lock a file or folder:</strong></p>
-			<ul>
-				<li>Right-click on any file or folder in the file explorer</li>
-				<li>Select "🔒 Lock" from the context menu</li>
-				<li>Set a password for that item</li>
-			</ul>
-			<p><strong>To unlock:</strong></p>
-			<ul>
-				<li>Click on the unlock overlay when viewing a locked file</li>
-				<li>Or right-click and select "🔓 Unlock"</li>
-				<li>Or use the Locket Manager (ribbon icon)</li>
-			</ul>
-			<p><strong>Auto-locking:</strong></p>
-			<ul>
-				<li>When enabled, files are automatically locked when closed or when switching to other files</li>
-				<li>Files remain unlocked while open in multiple tabs</li>
-				<li>Turn off auto-locking if you prefer manual control</li>
-			</ul>
-			<p><strong>Note:</strong> Unlocked items remain accessible until you restart Obsidian or they are auto-locked.</p>
-		`;
+		const instructions = containerEl.createEl('div', { cls: 'locket-instructions' });
+		
+		// To lock section
+		const lockSection = instructions.createEl('div');
+		lockSection.createEl('p').createEl('strong', { text: 'To lock a file or folder:' });
+		const lockList = lockSection.createEl('ul');
+		lockList.createEl('li', { text: 'Right-click on any file or folder in the file explorer' });
+		lockList.createEl('li', { text: 'Select "🔒 Lock" from the context menu' });
+		lockList.createEl('li', { text: 'Set a password for that item' });
+		
+		// To unlock section
+		const unlockSection = instructions.createEl('div');
+		unlockSection.createEl('p').createEl('strong', { text: 'To unlock:' });
+		const unlockList = unlockSection.createEl('ul');
+		unlockList.createEl('li', { text: 'Click on the unlock overlay when viewing a locked file' });
+		unlockList.createEl('li', { text: 'Or right-click and select "🔓 Unlock"' });
+		unlockList.createEl('li', { text: 'Or use the Manager (ribbon icon)' });
+		
+		// Auto-locking section
+		const autoSection = instructions.createEl('div');
+		autoSection.createEl('p').createEl('strong', { text: 'Auto-locking:' });
+		const autoList = autoSection.createEl('ul');
+		autoList.createEl('li', { text: 'When enabled, files are automatically locked when closed or when switching to other files' });
+		autoList.createEl('li', { text: 'Files remain unlocked while open in multiple tabs' });
+		autoList.createEl('li', { text: 'Turn off auto-locking if you prefer manual control' });
+		
+		// Note
+		instructions.createEl('p').createEl('strong', { text: 'Note: Unlocked items remain accessible until you restart Obsidian or they are auto-locked.' });
 	}
 }
